@@ -9,15 +9,14 @@ const Electron = require('electron');
 const { app, BrowserWindow, ipcMain, Menu, MenuItem, dialog } = Electron;
 
 
+// Basic Electron app initializer and event handlers
 var main_window;
 
 const home_url = `file://${__dirname}/home.html`;
 
-
 app.on('ready', () => {
     createMainWindow()
 });
-
 
 app.on('window-all-closed', () => {
     if (process.platform !== 'darwin') {
@@ -25,13 +24,11 @@ app.on('window-all-closed', () => {
     }
 });
 
-
 app.on('activate', () => {
     if (main_window === null) {
         createMainWindow()
     }
 });
-
 
 function createMainWindow() {
 
@@ -45,8 +42,14 @@ function createMainWindow() {
 
 }
 
+
+
+// Request handling
+
+
 var context_menu;
 
+// Handle the asynchronous context menu popup
 ipcMain.on('requested-context-menu', () => {
 
     // Context menu can be made from a template, or dynamically, like here
