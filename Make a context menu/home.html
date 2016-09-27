@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<style>
+    div {
+        width: 300px;
+        height: 100px;
+        border: solid black 1px;
+    }
+</style>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+</head>
+
+<body>
+
+    <h1 id="hello-click">Hello world! Right click here!</h1>
+
+    <div id="right-click-div">
+        Right click me!
+    </div>
+</body>
+
+<script>
+
+    const Electron = require('electron');
+    const { ipcRenderer, remote } = Electron;
+    const { Menu, dialog } = remote;
+
+
+    // Asynchronous context menu (delegates task to main process)
+
+    document.getElementById('hello-click').addEventListener('contextmenu', (event) => {
+        ipcRenderer.send('requested-context-menu')
+    });
+
+
+    // Synchronous context menu
+
+    // Context menu template
+    const menu_template = [
+        {
+            label: 'Hey! You there! Click me!',
+            click() {
+                // Fancy alert
+                dialog.showMessageBox(remote.getCurrentWindow(), {
+                    buttons: ['Ok'],
+                    title: 'Message',
+                    message: 'Yay! You clicked me!'
+                })
+            }
+        }
+    ];
+    // Build menu from template
+    const context_menu = Menu.buildFromTemplate(menu_template);
+
+    // Add 'contextmenu' event listener to capture the right click event
+    document.getElementById('right-click-div').addEventListener('contextmenu', (event) => {
+        context_menu.popup(remote.getCurrentWindow())
+    })
+
+</script>
+
+</html>
