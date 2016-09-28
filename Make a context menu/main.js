@@ -50,7 +50,7 @@ function createMainWindow() {
 var context_menu;
 
 // Handle the asynchronous context menu popup
-ipcMain.on('requested-context-menu', () => {
+ipcMain.on('requested-context-menu', (ipc_event, mouse_x, mouse_y) => {
 
     // Context menu can be made from a template, or dynamically, like here
     context_menu = new Menu();
@@ -67,7 +67,7 @@ ipcMain.on('requested-context-menu', () => {
     }));
 
     // Makes the context menu pop up on mouse location
-    context_menu.popup(main_window)
+    context_menu.popup(main_window, mouse_x, mouse_y)
 
 });
 

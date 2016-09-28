@@ -87,21 +87,24 @@ Then, it's up to you to decide if you want the menu processing task to be handle
     
     // Synchronous handle
     html_element.addEventListener('contextmenu', (event) => {
-        context_menu.popup(remote.getCurrentWindow())
+        context_menu.popup(remote.getCurrentWindow(), event.x, event.y)
         // And other handle stuff here
     })
     
     // Asynchronous handle
     html_element.addEventListener('contextmenu', (event) => {
-        ipcRenderer.send('asynchronous-context-menu')
+        ipcRenderer.send('asynchronous-context-menu', additionnal_data, event.x, event.y)
+        // It appears that 'event' cannot be passed as an object to the main process (Electron v1.3.3 and v1.4.1)
     })
     
     
     // main.js
     
     // Asynchronous handle in main process
-    ipcMain.on('asynchronous-context-menu', (ipc_event) => {
+    ipcMain.on('asynchronous-context-menu', (ipc_event, additionnal_data, mouse_x, mouse_y) => {
         context_menu.popup(main_window)
         // And other handle stuff here
     })
 ```
+
+The x and y coordinates allow you to display the context menu at the right click position, not the current mouse position on popup, since there is a little latency.

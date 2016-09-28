@@ -33,7 +33,7 @@
     // Asynchronous context menu (delegates task to main process)
 
     document.getElementById('hello-click').addEventListener('contextmenu', (event) => {
-        ipcRenderer.send('requested-context-menu')
+        ipcRenderer.send('requested-context-menu', event.x, event.y)
     });
 
 
