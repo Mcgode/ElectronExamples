@@ -1,5 +1,8 @@
 # Make a context menu
 
+Remember, you can always check out the mini-project to have a demo.
+
+
 ### What is a context menu?
 
 A context menu is a popup menu, containing items. This popup is triggered by a right click.
